@@ -1,0 +1,79 @@
+Folder PATH listing
+Volume serial number is 0ABB-595B
+C:.
+¦   config.py
+¦   main.py
+¦   project_structure.txt
+¦   requirements.txt
+¦   
++---app
+¦   ¦   __init__.py
+¦   ¦   
+¦   +---forms
+¦   ¦   ¦   forms.py
+¦   ¦   ¦   __init__.py
+¦   ¦   ¦   
+¦   ¦   +---__pycache__
+¦   ¦           forms.cpython-312.pyc
+¦   ¦           __init__.cpython-312.pyc
+¦   ¦           
+¦   +---models
+¦   ¦   ¦   health_data.py
+¦   ¦   ¦   user.py
+¦   ¦   ¦   __init__.py
+¦   ¦   ¦   
+¦   ¦   +---__pycache__
+¦   ¦           health_data.cpython-312.pyc
+¦   ¦           user.cpython-312.pyc
+¦   ¦           __init__.cpython-312.pyc
+¦   ¦           
+¦   +---routes
+¦   ¦   ¦   admin.py
+¦   ¦   ¦   auth.py
+¦   ¦   ¦   doctor.py
+¦   ¦   ¦   patient.py
+¦   ¦   ¦   __init__.py
+¦   ¦   ¦   
+¦   ¦   +---__pycache__
+¦   ¦           admin.cpython-312.pyc
+¦   ¦           auth.cpython-312.pyc
+¦   ¦           doctor.cpython-312.pyc
+¦   ¦           patient.cpython-312.pyc
+¦   ¦           __init__.cpython-312.pyc
+¦   ¦           
+¦   +---static
+¦   ¦   +---css
+¦   ¦   ¦       style.css
+¦   ¦   ¦       
+¦   ¦   +---js
+¦   ¦           charts.js
+¦   ¦           main.js
+¦   ¦           
+¦   +---__pycache__
+¦           app.cpython-312.pyc
+¦           __init__.cpython-312.pyc
+¦           
++---migrations
+¦   ¦   alembic.ini
+¦   ¦   env.py
+¦   ¦   README
+¦   ¦   script.py.mako
+¦   ¦   
+¦   +---versions
+¦   ¦   ¦   abffa72865f4_initial_migration.py
+¦   ¦   ¦   
+¦   ¦   +---__pycache__
+¦   ¦           abffa72865f4_initial_migration.cpython-312.pyc
+¦   ¦           
+¦   +---__pycache__
+¦           env.cpython-312.pyc
+¦           
++---templates
+¦       base.html
+¦       login.html
+¦       register.html
+¦       
++---__pycache__
+        config.cpython-312.pyc
+        main.cpython-312.pyc
+        

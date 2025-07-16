@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+{% block title %}Welcome to HealthGuard{% endblock %}
+
+{% block content %}
+<style>
+  body {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+  }
+
+  .hero {
+      background: linear-gradient(to right, #00c6ff, #0072ff);
+      color: white;
+      padding: 100px 20px;
+      text-align: center;
+      width: 100%;
+  }
+
+  .section-title {
+      font-size: 2.8rem;
+      font-weight: bold;
+      margin-bottom: 2rem;
+  }
+
+  .service-card {
+      border-radius: 12px;
+      padding: 30px;
+      background: white;
+      height: 100%;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s ease;
+  }
+
+  .service-card:hover {
+      transform: translateY(-5px);
+  }
+
+  .btn-register {
+      background-color: #28a745;
+      color: white;
+      font-size: 1.25rem;
+      padding: 12px 30px;
+      border: none;
+      border-radius: 8px;
+      transition: 0.3s;
+  }
+
+  .btn-register:hover {
+      background-color: #1e7e34;
+  }
+
+  .services-section {
+      background-color: #f8f9fa;
+      padding: 80px 30px;
+      width: 100%;
+  }
+
+  .card-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-top: 10px;
+  }
+
+  .img-icon {
+      width: 70px;
+      margin-bottom: 15px;
+  }
+
+  @media (min-width: 1400px) {
+    .row-cols-md-4 > * {
+        flex: 0 0 25%;
+        max-width: 25%;
+    }
+  }
+</style>
+
+<!-- 🌟 Hero Section -->
+<div class="hero">
+  <div class="container-fluid">
+    <h1 class="display-3 fw-bold">Welcome to HealthGuard</h1>
+    <p class="lead fs-4">AI-driven Patient Monitoring & Real-Time Risk Alerts</p>
+    <a href="{{ url_for('auth.register') }}" class="btn btn-register mt-3">Get Started</a>
+  </div>
+</div>
+
+<!-- 💼 Services Section -->
+<div class="services-section">
+  <div class="container-fluid">
+    <h2 class="text-center text-primary section-title">Our Services</h2>
+    <div class="row row-cols-1 row-cols-md-4 g-4">
+      <div class="col">
+        <div class="service-card text-center">
+          <img src="{{ url_for('static', filename='images/patient.png') }}" class="img-fluid img-icon" alt="Patient Entry">
+          <h5 class="card-title">Patient Vitals Entry</h5>
+          <p>Patients record temperature, glucose, oxygen level, and blood pressure daily through intuitive forms.</p>
+        </div>
+      </div>
+      <div class="col">
+        <div class="service-card text-center">
+          <img src="{{ url_for('static', filename='images/ai.png') }}" class="img-fluid img-icon" alt="AI Risk Engine">
+          <h5 class="card-title">AI Risk Prediction</h5>
+          <p>Each entry is instantly analyzed using AI to determine if a patient is at high or low risk.</p>
+        </div>
+      </div>
+      <div class="col">
+        <div class="service-card text-center">
+          <img src="{{ url_for('static', filename='images/doctor.png') }}" class="img-fluid img-icon" alt="Doctor View">
+          <h5 class="card-title">Doctor Dashboard</h5>
+          <p>Doctors view real-time risk alerts, patient records, and communicate directly via the system.</p>
+        </div>
+      </div>
+      <div class="col">
+        <div class="service-card text-center">
+          <img src="{{ url_for('static', filename='images/admin.png') }}" class="img-fluid img-icon" alt="Admin Panel">
+          <h5 class="card-title">Admin Management</h5>
+          <p>Admins oversee all users, export reports, and manage system access and appointments.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

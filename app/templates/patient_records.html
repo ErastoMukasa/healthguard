@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}{{ patient.username }}'s Records{% endblock %}
+
+{% block content %}
+<h3>Full Health Records for {{ patient.username }}</h3>
+<a href="{{ url_for('doctor.dashboard') }}" class="btn btn-secondary btn-sm mb-3">Back to Dashboard</a>
+
+<table class="table table-bordered table-striped">
+  <thead>
+    <tr>
+      <th>Temperature</th>
+      <th>Heart Rate</th>
+      <th>Oxygen</th>
+      <th>Glucose</th>
+      <th>Blood Pressure</th>
+      <th>Risk Score</th>
+      <th>Risk Class</th>
+      <th>Timestamp</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for record in records %}
+    <tr class="{% if record.risk_class == 1 %}table-danger{% endif %}">
+      <td>{{ record.temperature }}</td>
+      <td>{{ record.heart_rate }}</td>
+      <td>{{ record.oxygen_level }}</td>
+      <td>{{ record.glucose_level or 'N/A' }}</td>
+      <td>{{ record.blood_pressure or 'N/A' }}</td>
+      <td>{{ '%.2f' % record.risk_score }}</td>
+      <td>
+        {% if record.risk_class == 1 %}
+          <span class="badge bg-danger">High Risk</span>
+        {% else %}
+          <span class="badge bg-success">Low Risk</span>
+        {% endif %}
+      </td>
+      <td>{{ record.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

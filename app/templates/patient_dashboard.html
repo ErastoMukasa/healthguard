@@ -1,0 +1,211 @@
+{% extends 'base.html' %}
+{% block title %}Patient Dashboard{% endblock %}
+
+{% block content %}
+<h1>Welcome, {{ user.username }} (Patient)</h1>
+
+<!-- Flash messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <div>
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+<!-- Health Data Entry Form -->
+<form method="POST" action="{{ url_for('patient.dashboard') }}">
+    {{ form.hidden_tag() }}
+
+    <div class="form-group">
+        {{ form.temperature.label }} (°C)
+        {{ form.temperature(class="form-control", placeholder="e.g. 36.6") }}
+    </div>
+
+    <div class="form-group">
+        {{ form.heart_rate.label }} (bpm)
+        {{ form.heart_rate(class="form-control", placeholder="e.g. 72") }}
+    </div>
+
+    <div class="form-group">
+        {{ form.oxygen_level.label }} (%)
+        {{ form.oxygen_level(class="form-control", placeholder="e.g. 98") }}
+    </div>
+
+     <div class="form-group">
+        {{ form.blood_pressure.label }} (mmHg)
+        {{ form.blood_pressure(class="form-control", placeholder="e.g. 120/80") }}
+    </div>
+
+    <div class="form-group">
+        {{ form.glucose_level.label }} (mg/dL)
+        {{ form.glucose_level(class="form-control", placeholder="e.g. 100") }}
+    </div>
+
+    <button type="submit" name="submit" class="btn btn-primary mt-2">Submit</button>
+</form>
+
+<hr>
+
+<!-- Appointment Booking Form -->
+<h3>Book an Appointment</h3>
+<form method="POST" action="{{ url_for('patient.dashboard') }}">
+    {{ appointment_form.hidden_tag() }}
+
+    {# Hidden patient_id field #}
+    <input type="hidden" name="patient_id" value="{{ user.id }}">
+
+    <div class="form-group">
+        {{ appointment_form.doctor_id.label }}
+        {{ appointment_form.doctor_id(class="form-select") }}
+    </div>
+
+    <div class="form-group">
+        {{ appointment_form.date.label }}
+        {{ appointment_form.date(class="form-control") }}
+    </div>
+
+    <div class="form-group">
+        {{ appointment_form.reason.label }}
+        {{ appointment_form.reason(class="form-control", placeholder="e.g. I’ve been having persistent headaches") }}
+    </div>
+
+    <button type="submit" name="book" class="btn btn-success mt-2">Book Appointment</button>
+</form>
+
+<hr>
+
+<!-- Patient Message Form -->
+<h3>Send a Message to Your Doctor</h3>
+<form method="POST" action="{{ url_for('patient.dashboard') }}">
+    {{ patient_message_form.hidden_tag() }}
+
+    <div class="form-group">
+        {{ patient_message_form.doctor_id.label }}
+        {{ patient_message_form.doctor_id(class="form-select") }}
+    </div>
+
+    <div class="form-group">
+        {{ patient_message_form.content.label }}
+        {{ patient_message_form.content(class="form-control", rows="3", placeholder="Write your message here...") }}
+    </div>
+
+    <button type="submit" name="send_message" class="btn btn-info mt-2">Send Message</button>
+</form>
+
+<hr>
+
+<!-- Doctor's Advice / Messages Section -->
+<h3>Doctor's Advice / Messages</h3>
+{% if doctor_messages %}
+  <ul class="list-group">
+  {% for msg in doctor_messages %}
+    <li class="list-group-item">{{ msg.content }} <small class="text-muted">({{ msg.timestamp.strftime('%Y-%m-%d %H:%M') }})</small></li>
+  {% endfor %}
+  </ul>
+{% else %}
+  <p>No advice or messages from your doctor yet.</p>
+{% endif %}
+
+<hr>
+
+<!-- Health Data Chart -->
+<h3>Your Health Data Over Time</h3>
+<canvas id="healthChart" width="600" height="400"></canvas>
+
+<pre>
+Temperatures: {{ temperatures }}
+Heart Rates: {{ heart_rates }}
+Oxygen Levels: {{ oxygen_levels }}
+Glucose Levels: {{ glucose_levels }}
+Blood Pressures: {{ blood_pressures }}
+</pre>
+
+
+<!-- Chart.js script -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const healthLabels = {{ labels | tojson }};
+  const healthTemperatures = {{ temperatures | tojson }};
+  const healthHeartRates = {{ heart_rates | tojson }};
+  const healthOxygenLevels = {{ oxygen_levels | tojson }};
+  const healthBloodPressures = {{ blood_pressures | tojson }};
+  const healthGlucoseLevels = {{ glucose_levels | tojson }};
+
+  const ctx = document.getElementById('healthChart').getContext('2d');
+  const healthChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: healthLabels,
+      datasets: [
+        {
+          label: 'Temperature (°C)',
+          data: healthTemperatures,
+          borderColor: 'rgba(255, 99, 132, 1)',
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          fill: false,
+          tension: 0.1
+        },
+        {
+          label: 'Heart Rate (bpm)',
+          data: healthHeartRates,
+          borderColor: 'rgba(54, 162, 235, 1)',
+          backgroundColor: 'rgba(54, 162, 235, 0.2)',
+          fill: false,
+          tension: 0.1
+        },
+        {
+          label: 'Oxygen Level (%)',
+          data: healthOxygenLevels,
+          borderColor: 'rgba(75, 192, 192, 1)',
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          fill: false,
+          tension: 0.1
+        },
+        {
+          label: 'Blood Pressure (mmHg)',
+          data: healthBloodPressures,
+          borderColor: 'rgba(139, 0, 0, 1)',
+          backgroundColor: 'rgba(139, 0, 0, 0.2)',
+          fill: false,
+          tension: 0.1,
+          pointRadius: 4,
+          pointHoverRadius: 6
+        },
+
+        {
+          label: 'Glucose Level (mg/dL)',
+          data: healthGlucoseLevels,
+          borderColor: 'rgba(153, 102, 255, 1)',
+          backgroundColor: 'rgba(153, 102, 255, 0.2)',
+          fill: false,
+          tension: 0.1
+        }
+
+      ]
+    },
+    options: {
+      responsive: true,
+      interaction: {
+        mode: 'index',
+        intersect: false,
+      },
+      stacked: false,
+      plugins: {
+        title: {
+          display: true,
+          text: 'Health Data Over Time'
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: false
+        }
+      }
+    }
+  });
+</script>
+
+{% endblock %}

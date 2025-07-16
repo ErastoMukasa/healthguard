@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1 class="mb-0">Welcome, {{ user.username }} (Admin)</h1>
+        <div>
+            <a href="{{ url_for('admin.export_users') }}" class="btn btn-sm btn-outline-primary me-2">Export Users</a>
+            <a href="{{ url_for('admin.export_appointments') }}" class="btn btn-sm btn-outline-success me-2">Export Appointments</a>
+            <a href="{{ url_for('admin.create_appointment') }}" class="btn btn-sm btn-success">+ Book Appointment</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Users Section -->
+        <div class="col-md-6">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">All Users</h5>
+                    <a href="{{ url_for('admin.create_user') }}" class="btn btn-sm btn-outline-light">+ Add User</a>
+                </div>
+                <div class="card-body p-0">
+                    {% if users %}
+                        <ul class="list-group list-group-flush">
+                            {% for u in users %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>{{ u.username }}</strong>
+                                        <span class="badge bg-secondary ms-2">{{ u.role }}</span>
+                                    </div>
+                                    <div class="btn-group">
+                                        <a href="{{ url_for('admin.edit_user', user_id=u.id) }}" class="btn btn-sm btn-outline-primary">Edit</a>
+                                        <form action="{{ url_for('admin.delete_user', user_id=u.id) }}" method="POST" style="display:inline;">
+                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                        </form>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="p-3">No users found.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Appointments Section -->
+        <div class="col-md-6">
+            <div class="card mb-4 shadow-sm">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">Appointments</h5>
+                </div>
+                <div class="card-body p-0">
+                    {% if appointments %}
+                        <ul class="list-group list-group-flush">
+                            {% for appt in appointments %}
+                                <li class="list-group-item">
+                                    <div>
+                                        <strong>Date:</strong> {{ appt.date.strftime('%Y-%m-%d %H:%M') }}<br>
+                                        <strong>Patient ID:</strong> {{ appt.patient_id }},
+                                        <strong>Doctor ID:</strong> {{ appt.doctor_id }}<br>
+                                        <strong>Reason:</strong> {{ appt.reason }}
+                                    </div>
+                                    <div class="mt-2">
+                                        <a href="{{ url_for('admin.edit_appointment', appointment_id=appt.id) }}" class="btn btn-sm btn-outline-primary">Edit</a>
+                                        <form action="{{ url_for('admin.delete_appointment', appointment_id=appt.id) }}" method="POST" style="display:inline;">
+                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                                        </form>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="p-3">No appointments found.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Edit Appointment{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Edit Appointment #{{ appointment.id }}</h2>
+
+    <form method="POST">
+        {{ form.hidden_tag() }}
+
+        <div class="mb-3">
+            {{ form.patient_id.label(class="form-label") }}
+            {{ form.patient_id(class="form-select") }}
+            {% if form.patient_id.errors %}
+                <div class="text-danger">{{ form.patient_id.errors[0] }}</div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            {{ form.doctor_id.label(class="form-label") }}
+            {{ form.doctor_id(class="form-select") }}
+            {% if form.doctor_id.errors %}
+                <div class="text-danger">{{ form.doctor_id.errors[0] }}</div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            {{ form.reason.label(class="form-label") }}
+            {{ form.reason(class="form-control", rows=3) }}
+            {% if form.reason.errors %}
+                <div class="text-danger">{{ form.reason.errors[0] }}</div>
+            {% endif %}
+        </div>
+
+        <div class="mb-3">
+            {{ form.date.label(class="form-label") }}
+            {{ form.date(class="form-control") }}
+            {% if form.date.errors %}
+                <div class="text-danger">{{ form.date.errors[0] }}</div>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-primary">{{ form.submit.label.text }}</button>
+        <a href="{{ url_for('admin.dashboard') }}" class="btn btn-secondary">Cancel</a>
+    </form>
+</div>
+{% endblock %}
